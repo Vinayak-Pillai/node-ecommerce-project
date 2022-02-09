@@ -39,9 +39,9 @@ export const login = async (req, res) => {
   });
 
   if (checkAdmin) {
-    console.log("Chek Admin done", req.session);
+    // console.log("Chek Admin done", req.session);
     req.session.adminId = checkAdmin._id;
-    console.log("Admin", req.session);
+    // console.log("Admin", req.session);
     res.status(200).json({
       status: true,
       message: "Logged in successfully",
