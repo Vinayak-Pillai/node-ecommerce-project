@@ -1,0 +1,6 @@
+Saved Folder=>cmd=>
+
+1.   npm install express
+
+
+2. npm run start
