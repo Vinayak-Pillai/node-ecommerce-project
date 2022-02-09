@@ -31,7 +31,7 @@ export const insertProductData = async (req, res) => {
   let uploadImage = multer({
     storage: storage,
     limits: { fieldSize: 10 * 1024 * 1024 },
-  }).single("file");
+  }).single("path");
   uploadImage(req, res, async function (err) {
     let productData = {
       product_name: req.body.p_name,
@@ -39,7 +39,7 @@ export const insertProductData = async (req, res) => {
       product_price: req.body.p_price,
       categoryId: req.body.c_id,
       subcategoryId: req.body.sc_id,
-      productImage: req.file.file,
+      productImage: req.file.path,
     };
     let insertProduct = await Product.create(productData);
     console.log(req.file);

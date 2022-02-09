@@ -1,6 +1,7 @@
 import express from "express";
 import session from "express-session";
 import bodyParser from "body-parser";
+// import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import userRoute from "./routes/user.route";
 import productRoute from "./routes/product.route";
@@ -12,6 +13,7 @@ const app = express();
 app.use(cors());
 // app.use(express.json());
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   session({
     secret: "Your_first_key",
