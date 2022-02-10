@@ -84,6 +84,7 @@ export const getProducts = async (req, res) => {
   res.status(200).json({
     message: "Success",
     data: products,
+    imgPath: "http://" + req.get("host") + "/",
     status: true,
   });
 };
@@ -131,6 +132,7 @@ export const getProductsOnscc = async (req, res) => {
       res.status(200).json({
         message: "Success",
         data: getProducts,
+        imgPath: "http:///" + req.get("host") + "/",
         status: true,
       });
     } else {
@@ -166,6 +168,7 @@ export const getProductsOnscc = async (req, res) => {
       res.status(200).json({
         message: "Success",
         data: getProducts,
+        imgPath: "http:///" + req.get("host") + "//",
         status: true,
       });
     }
