@@ -1,13 +1,15 @@
 import express from "express";
 import session from "express-session";
 import bodyParser from "body-parser";
-// import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import userRoute from "./routes/user.route";
 import productRoute from "./routes/product.route";
 import subcategoryRoute from "./routes/subcategory.routes";
 import categoryRoute from "./routes/category.route";
 import cors from "cors";
+const dotenv = require("dotenv").config();
+
+let port = process.env.PORT;
 
 const app = express();
 app.use(cors());
@@ -35,6 +37,6 @@ mongoose
     console.log("Error");
   });
 
-app.listen(3000, function () {
+app.listen(port, function () {
   console.log("Server created at port 3000");
 });

@@ -9,7 +9,7 @@ import {
 
 const router = express.Router();
 
-router.get("/add-user", insertAdmin); //api to insert admin.
+router.post("/add-user", insertAdmin); //api to insert admin.
 router.post("/login", login); //api to login as admin. email and password passed inside body.
 router.post("/my-profile", myprofile);
 

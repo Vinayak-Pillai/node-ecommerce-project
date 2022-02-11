@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 export const setSession = (req, res) => {
   console.log(req.session);
   req.session.name = req.params.sessionName;
@@ -27,13 +28,15 @@ export const destroySession = (req, res) => {
 };
 
 export const checkSession = (req, res, next) => {
-  console.log("Req session:", req.session);
-  if (req.session.adminId) {
+  let token;
+  if (req.headers.authorization) {
+    token = req.headers.authorization.split(" ")[1];
+    let decoded = jwt.verify(token, process.env.SECRET_KEY);
+    req.user = decoded.id;
     next();
   } else {
-    res.status(500).json({
-      status: false,
-      message: "Unauthorized Access",
+    res.status(400).json({
+      message: "Not authorized",
     });
   }
 };

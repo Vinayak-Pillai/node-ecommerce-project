@@ -1,56 +1,86 @@
 import User from "../models/user.model";
+import jwt from "jsonwebtoken";
 
 export const insertAdmin = async (req, res) => {
-  let userData = {
-    email: "admin@mail.com",
-    password: "admin123",
-  };
+  const { email, password } = req.body;
 
-  let insertAdminData = await User.create(userData);
-  res.status(200).json({
-    message: "Success",
-    data: insertAdminData,
-    status: true,
-  });
+  try {
+    if (!email) {
+      res.status(400).json({
+        message: "Enter email",
+      });
+      return false;
+    }
+    if (!password) {
+      res.status(400).json({
+        message: "Enter password",
+      });
+      return false;
+    }
+
+    let userData = {
+      email: email,
+      password: password,
+    };
+
+    let insertAdminData = await User.create(userData);
+
+    res.status(200).json({
+      message: "Success",
+      data: insertAdminData,
+      status: true,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const login = async (req, res) => {
-  //validations
-  if (!req.body.email) {
-    res.status(422).json({
-      status: false,
-      message: "Email required",
-    });
-  }
-  if (!req.body.password) {
-    res.status(422).json({
-      status: false,
-      message: "Password required",
-    });
-  }
-  //validations
-
   let { email, password } = req.body;
 
-  //db check on given credentials
-  let checkAdmin = await User.findOne({
-    email: email,
-    password: password,
-  });
+  try {
+    //validations
+    if (!req.body.email) {
+      res.status(422).json({
+        status: false,
+        message: "Email required",
+      });
+    }
+    if (!req.body.password) {
+      res.status(422).json({
+        status: false,
+        message: "Password required",
+      });
+    }
+    //validations
 
-  if (checkAdmin) {
-    // console.log("Chek Admin done", req.session);
-    req.session.adminId = checkAdmin._id;
-    // console.log("Admin", req.session);
-    res.status(200).json({
-      status: true,
-      message: "Logged in successfully",
+    //db check on given credentials
+    let checkAdmin = await User.findOne({
+      email: email,
+      password: password,
     });
-  } else {
-    res.status(200).json({
-      status: false,
-      message: "Invalid Credentials",
-    });
+
+    if (checkAdmin) {
+      // console.log("Chek Admin done", req.session);
+      // req.session.adminId = checkAdmin._id;
+      // console.log("Admin", req.session);
+      let id = checkAdmin._id;
+      let signjwt = jwt.sign({ id }, process.env.SECRET_KEY, {
+        expiresIn: 30000,
+      });
+      res.status(200).json({
+        status: true,
+        token: signjwt,
+        message: "Logged in successfully",
+      });
+    } else {
+      res.status(200).json({
+        status: false,
+        message: "Invalid Credentials",
+      });
+    }
+  } catch (error) {
+    console.log(error);
   }
   //db check on given credentials
 };
